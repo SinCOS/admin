@@ -1,0 +1,15 @@
+{
+    "require": {
+        "slim/slim": "^3.8",
+        "slim/twig-view": "^2.2",
+        "monolog/monolog": "^1.22",
+        "catfan/Medoo": "^1.2",
+        "illuminate/database": "v5.4.17"
+    },
+    "autoload": {
+        "psr-4":{
+            "App\\" : "app/"
+        }
+        
+    }
+}
