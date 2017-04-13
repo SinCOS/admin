@@ -2,10 +2,9 @@
 
 namespace App\Admin\Controllers;
 
-
-class APIController extends Controller{
-    public function getSystemInfo(){
-
+class APIController extends Controller
+{
+    public function getSystemInfo()
+    {
     }
-    
 }
