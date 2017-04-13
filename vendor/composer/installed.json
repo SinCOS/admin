@@ -17,7 +17,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2017-02-14 16:28:37",
+        "time": "2017-02-14T16:28:37+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -68,7 +68,7 @@
         "require": {
             "psr/container": "^1.0"
         },
-        "time": "2017-02-14 19:40:03",
+        "time": "2017-02-14T19:40:03+00:00",
         "type": "library",
         "installation-source": "source",
         "autoload": {
@@ -101,7 +101,7 @@
         "require": {
             "php": ">=5.4.0"
         },
-        "time": "2017-01-19 11:35:12",
+        "time": "2017-01-19T11:35:12+00:00",
         "type": "library",
         "installation-source": "source",
         "autoload": {
@@ -146,7 +146,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-08-06 14:39:51",
+        "time": "2016-08-06T14:39:51+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -198,7 +198,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2015-09-11 15:10:35",
+        "time": "2015-09-11T15:10:35+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -258,7 +258,7 @@
             "phpunit/phpunit": "^4.0",
             "squizlabs/php_codesniffer": "^2.5"
         },
-        "time": "2017-03-19 17:55:20",
+        "time": "2017-03-19T17:55:20+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -322,7 +322,7 @@
         "suggest": {
             "ext-mbstring": "For best performance"
         },
-        "time": "2016-11-14 01:06:16",
+        "time": "2016-11-14T01:06:16+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -386,7 +386,7 @@
             "symfony/debug": "~2.7",
             "symfony/phpunit-bridge": "~3.3@dev"
         },
-        "time": "2017-03-22 15:41:51",
+        "time": "2017-03-22T15:41:51+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -450,7 +450,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.8|^5.7"
         },
-        "time": "2017-01-25 20:38:39",
+        "time": "2017-01-25T20:38:39+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -497,7 +497,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-10-10 12:19:37",
+        "time": "2016-10-10T12:19:37+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -576,7 +576,7 @@
             "ruflin/elastica": "Allow sending log messages to an Elastic Search server",
             "sentry/sentry": "Allow sending log messages to a Sentry server"
         },
-        "time": "2017-03-13 07:08:03",
+        "time": "2017-03-13T07:08:03+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -635,7 +635,7 @@
             "ext-pdo_sqlite": "For SQLite databases",
             "ext-pdo_sqlsrv": "For MSSQL databases on Windows platform"
         },
-        "time": "2017-02-17 16:05:35",
+        "time": "2017-02-17T16:05:35+00:00",
         "type": "framework",
         "installation-source": "dist",
         "autoload": {
@@ -698,7 +698,7 @@
             "symfony/config": "",
             "symfony/yaml": ""
         },
-        "time": "2017-03-21 21:44:32",
+        "time": "2017-03-21T21:44:32+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -754,7 +754,7 @@
             "friendsofphp/php-cs-fixer": "~2",
             "phpunit/phpunit": "~4.0 || ~5.0"
         },
-        "time": "2017-01-16 07:55:07",
+        "time": "2017-01-16T07:55:07+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -810,7 +810,7 @@
         "suggest": {
             "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
         },
-        "time": "2017-03-13 16:27:32",
+        "time": "2017-03-13T16:27:32+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -854,7 +854,7 @@
         "require": {
             "php": ">=5.6.4"
         },
-        "time": "2017-03-29 13:17:47",
+        "time": "2017-03-29T13:17:47+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -901,7 +901,7 @@
         "require-dev": {
             "phpunit/phpunit": "4.*"
         },
-        "time": "2015-11-06 14:35:42",
+        "time": "2015-11-06T14:35:42+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -979,7 +979,7 @@
             "symfony/process": "Required to use the composer class (~3.2).",
             "symfony/var-dumper": "Required to use the dd function (~3.2)."
         },
-        "time": "2017-03-28 12:49:45",
+        "time": "2017-03-28T12:49:45+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1027,7 +1027,7 @@
             "illuminate/contracts": "5.4.*",
             "php": ">=5.6.4"
         },
-        "time": "2017-03-13 14:14:19",
+        "time": "2017-03-13T14:14:19+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1083,7 +1083,7 @@
             "illuminate/filesystem": "Required to use the migrations (5.4.*).",
             "illuminate/pagination": "Required to paginate the result set (5.4.*)."
         },
-        "time": "2017-04-02 22:04:36",
+        "time": "2017-04-02T22:04:36+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1113,6 +1113,73 @@
             "laravel",
             "orm",
             "sql"
+        ]
+    },
+    {
+        "name": "respect/validation",
+        "version": "1.1.12",
+        "version_normalized": "1.1.12.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Respect/Validation.git",
+            "reference": "5ab87d1dd932872f6670136a513f72ff9ea41c67"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/Respect/Validation/5ab87d1dd932872f6670136a513f72ff9ea41c67.zip",
+            "reference": "5ab87d1dd932872f6670136a513f72ff9ea41c67",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4",
+            "symfony/polyfill-mbstring": "^1.2"
+        },
+        "require-dev": {
+            "egulias/email-validator": "~1.2",
+            "malkusch/bav": "~1.0",
+            "mikey179/vfsstream": "^1.5",
+            "phpunit/phpunit": "~4.0",
+            "symfony/validator": "~2.6.9",
+            "zendframework/zend-validator": "~2.3"
+        },
+        "suggest": {
+            "egulias/email-validator": "Strict (RFC compliant) email validation",
+            "ext-bcmath": "Arbitrary Precision Mathematics",
+            "ext-mbstring": "Multibyte String Functions",
+            "fabpot/php-cs-fixer": "Fix PSR2 and other coding style issues",
+            "malkusch/bav": "German bank account validation",
+            "symfony/validator": "Use Symfony validator through Respect\\Validation",
+            "zendframework/zend-validator": "Use Zend Framework validator through Respect\\Validation"
+        },
+        "time": "2017-03-14T09:44:11+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.1-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Respect\\Validation\\": "library/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD Style"
+        ],
+        "authors": [
+            {
+                "name": "Respect/Validation Contributors",
+                "homepage": "https://github.com/Respect/Validation/graphs/contributors"
+            }
+        ],
+        "description": "The most awesome validation engine ever created for PHP",
+        "homepage": "http://respect.github.io/Validation/",
+        "keywords": [
+            "respect",
+            "validation",
+            "validator"
         ]
     }
 ]

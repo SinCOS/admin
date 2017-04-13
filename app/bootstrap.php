@@ -1,8 +1,6 @@
 <?php
 
-$app->get('/',function($rst,$resp,$args){
-
-});
+$app->get('/',"IndexController:index");
 
 $app->group("/stock",function()use($app){
     $app->get('/public',function($rst,$resp,$args){

@@ -1,9 +1,16 @@
 <?php
+
+
+
     use \Psr\Http\Message\ServerRequestInterface as Request;
     use \Psr\Http\Message\ResponseInterface as Response;
     date_default_timezone_set('Asia/Shanghai');
     ini_set('display_errors','On');
     require  "../vendor/autoload.php";
+
+
+
+
     $app = new \Slim\App([
         'settings' => [
             'displayErrorDetails' => true,
@@ -68,6 +75,15 @@
       
     };
 
+    $container['IndexController'] = function($container){
+        return new \App\Admin\Controllers\IndexController($container);
+    };
+    $container['AuthController'] = function($c){
+    return new \App\Admin\Controllers\Auth\AuthController($c);
+    };
+    $container['Validate'] = function($c){
+        
+    };
     require '../app/admin.php';
     require '../app/bootstrap.php';
     

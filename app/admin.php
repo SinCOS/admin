@@ -1,16 +1,11 @@
 <?php
 
-$app->group('/admin',function()use($app){
+    $app->group('/admin',function()use($app){
         $app->get('/',function($rst,$resp,$args){
             return $resp;
         });
-        $app->get('/login',function($rst,$resp,$args){
-           
-            return $this->view->render($resp,'login.html');
-        });
-        $app->post('/login',function($rst,$resp,$args){
-            return $resp;
-        });
+        $app->get('/login',"AuthController:getSignUp")->setName('auth.signup');
+        $app->post('/login','AuthController:postSignUp');
         $app->get('/group/id',function($rst,$resp,$args){
 
               $list = $this->db->select("user_stock",'*',[
