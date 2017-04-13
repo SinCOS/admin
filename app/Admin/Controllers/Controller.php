@@ -12,8 +12,8 @@ class Controller {
             return $this->container->{$property};
         }
     }
-    public function success(){
-
+    public function success($xx){
+       
     }
     public function error(){
         
