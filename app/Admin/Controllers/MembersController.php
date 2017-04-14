@@ -9,7 +9,7 @@ class MembersController extends Controller
 
     public function getMembers($rst, $resp, $args)
     {
-        $page = $rst->getQueryParams('p');
+        $page = intval($rst->getQueryParams('p')) ?? 1;
         $_start = ($page -1) * 20;
         $list = $this->db->select("users", "*", [
 
