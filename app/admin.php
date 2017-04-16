@@ -14,9 +14,11 @@
                   'uid' => 1 
                 ]
             ]);
+       
         $resp->getBody()->write(var_export($list));
         return $resp;
     });
+     $app->get('/member/list',"MemberController:getMembers");
     $app->post('/group/public',function($rst,$resp,$args){
          $data = $rst->getParsedBody();
 

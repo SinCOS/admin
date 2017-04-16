@@ -20,7 +20,7 @@
                     <li class="layui-nav-item layui-nav-itemed">
                         <a href="javascript:;">默认展开</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">选项1</a></dd>
+                            <dd><a href="javascript:;" data-url="">选项1</a></dd>
                             <dd><a href="javascript:;">选项2</a></dd>
                             <dd><a href="">跳转</a></dd>
                         </dl>
@@ -89,13 +89,18 @@
     {% include "template/partial/js.html" %}
     <script>
         var menu_json = null;
+        var $ = null;
+        var layer = null;
+        var util = null;
+        var pagesize = null;
+        var form = null;
         layui.use('element', 'layer', 'util', 'pagesize', 'form', function () {
-            var $ = layui.jquery();
-            var element = layui.element();
-            var layer = layui.layer();
-            var util = layui.util();
-            var pagesize = layui.pagesize();
-            var form = layui.form();
+            $ = layui.jquery();
+            element = layui.element();
+            layer = layui.layer();
+            util = layui.util();
+            pagesize = layui.pagesize();
+            form = layui.form();
             element.on('nav(leftnav)', function (elem) {
                 var $a = $(elem).children('a');
                 var url = $a.attr('data-url');

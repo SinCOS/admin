@@ -1,0 +1,50 @@
+<html>
+<head>
+    
+    {% include "template/partial/css.html" %}
+</head>
+<body>
+    <fieldset>
+
+    </fieldset>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+  <legend>行边框表格</legend>
+</fieldset>  
+ 
+<table class="layui-table" lay-skin="line">
+  <colgroup>
+    <col width="150">
+    <col width="200">
+    <col width="200">
+      <col width="200">
+        <col width="200">
+          <col width="200">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>用户名</th>
+      <th>注册时间</th>
+      <th>登录时间</th>
+      <th>登录IP</th>
+      <th>登录次数</th>
+    </tr> 
+  </thead>
+  <tbody>
+      {% for todo in userlist %}
+    <tr>
+      <td>{{ todo.id }}</td>
+      <td>{{ todo.username }}</td>
+      <td>{{ todo.reg_time }}</td>
+      <td>{{ todo.login_time }}</td>
+      <td>{{ todo.login_IP }}</td>
+      <td>{{ todo.total_login }}</td>
+    
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>   
+         
+</body>
+{% include 'template/partial/js.html' %}
+</html>

@@ -4,19 +4,32 @@ namespace App\Admin\Controllers;
 
 use Respect\Validation\Validator as v;
 
-class MembersController extends Controller
+class MemberController extends Controller
 {
 
     public function getMembers($rst, $resp, $args)
     {
-        $page = intval($rst->getQueryParams('p')) ?? 1;
+        if(!$rst->isXhr()){
+             return $this->view->render($resp,"template/members.html");
+        }
+        $page = intval($rst->getQueryParams('p')) ;
+        $page = $page === 0 ?1:$page;
         $_start = ($page -1) * 20;
-        $list = $this->db->select("users", "*", [
-                "LIMIT" => [$_start,20]
+        $total = $this->db->count('user');
+
+        $list = $this->db->select("user", "*", [
+                "LIMIT" => [$_start,20],
+                'ORDER' => ['total_login' => "DESC"]
         ]);
-        return $this->view->render($resp,"template/members.html",[
-            'userlist' => $list,
-        ]);
+        return $resp->getBody()->write(json_encode([
+            'status' => 200,
+            'msg' => '',
+            'result' => [
+                'data' =>$list ?? [],
+                'total' => $total,
+            ]
+        ]));
+       
     }
     public function getUserInfo($rst, $resp, $args)
     {
