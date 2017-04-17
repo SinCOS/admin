@@ -1,6 +1,6 @@
-{% extends 'template/body.html' %} 
-{% block content %}
-<div  id='app'>
+{% extends "template/body.html" %} 
+{% block container %}
+<div id='app'>
     <table class="layui-table" lay-skin="line">
         <colgroup>
             <col width="150">
@@ -15,7 +15,6 @@
             </tr>
         </thead>
         <tbody>
-            <template>
                 <tr v-for="todo in group_list">
                     <td v-text="todo['id']"></td>
                     <td v-text="todo['name']"></td>
@@ -25,7 +24,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td rowspan="6" id="page"></td>
+                <td colspan="3" id="page"></td>
             </tr>
         </tfoot>
         <table class='layui-table' style='margin-top:20px' lay-skin='line' v-show="stock_list.length > 0 ? true :false">
@@ -42,33 +41,30 @@
                 </tr>
             </tbody>
         </table>
-        
-            
-        
     </table>
-    <div id='addStock' style="display:none;">
-    <table class="layui-table" skin='line'>
-                <thead>
-                    
-                </thead>
-                <tbody>
-                    <tr v-for="(val,cpy_id) in stock_info">
-                        <td><input type="checkbox" v-model="select_Stock" v-bind:value="cpy_id"></td>
-                        <td v-text="cpy_id"></td>
-                        <td v-text="val"></td>
-                    </tr>
-                </tbody>
-    </table>
-</div>
+    <div id='addStock' style="display:none; padding:10px;">
+        <table class="layui-table" skin='line'>
+            <thead>
+
+            </thead>
+            <tbody>
+                <tr v-for="(val,cpy_id) in stock_info">
+                    <td><input type="checkbox" v-model="select_Stock" v-bind:value="cpy_id"></td>
+                    <td v-text="cpy_id"></td>
+                    <td v-text="val"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 {% endblock %} 
 {% block script %}
 <script>
-    var group_list = {{(group_list|json_encode|raw)}};
+    var group_list = {{(group_list | json_encode | raw)}};
 </script>
+
 <script>
-    alert('ok');
     layui.use(['element', 'laypage', 'jquery', 'layer'], function () {
         var element = layui.element();
         var $ = layui.jquery;
@@ -80,16 +76,16 @@
             data: {
                 group_list: group_list,
                 stock_list: [],
-                stock_info:[],
-                select_Group:0,
-                select_Stock:[]
+                stock_info: [],
+                select_Group: 0,
+                select_Stock: []
             },
             created: function () {
                 var self = this;
-                this.$http.get('/admin/stock/info').then(function(resp){
+                this.$http.get('/admin/stock/info').then(function (resp) {
                     self.stock_info = resp.body;
                     console.log(self.stock_info);
-                }).catch(function(resp){
+                }).catch(function (resp) {
                     layer.msg('初始化股票信息失败')
                 });
             },
@@ -108,18 +104,25 @@
                     });
 
                 },
-                addStockCode: function(group_id){
+                addStockCode: function (group_id) {
+                    var self = this;
                     layer.open({
-                        title:"添加股票",
-                        area:['400px','500px'],
-                        content:$("#addStock").html()
+                        type: 1,
+                        title: "添加股票",
+                        area: ['400px', '500px'],
+                        content: $("#addStock"),
+                        btn: ['确认'],
+                        yes: function(yes,layero){
+                            alert(JSON.stringify(self.select_Stock));
+                        }
                     });
                 },
-                deleteStock: function(user_stock_id){
+                deleteStock: function (user_stock_id) {
                     var self = this;
-                    this.$http.delete('/admin/stock/'+self.select_Group+'/'+user_stock_id).then(function(resp){
-                        
-                    }).catch(function(resp){
+                    this.$http.delete('/admin/stock/' + self.select_Group + '/' + user_stock_id).then(
+                        function (resp) {
+
+                        }).catch(function (resp) {
                         layer.msg("错误信息")
                     });
                 }

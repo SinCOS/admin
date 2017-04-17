@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,13 +19,13 @@
 <body>
     <div class="container">
         <div class="row">
-            {% block content %} 
-            
+            {% block container %} 
+
             {% endblock %}
         </div>
     </div>
 </body>
-{% include 'template/partial/js.html' %}
+{% include "template/partial/js.html" %}
 <script>
 </script>
 {% block script %} 
@@ -34,5 +33,3 @@
 {% endblock %}
 
 </html>
-
-<html
