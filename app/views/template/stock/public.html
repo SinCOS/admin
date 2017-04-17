@@ -1,5 +1,5 @@
 {% extends 'template/body.html' %} {% block content %}
-<div class="row" id='app'>
+<div  id='app'>
     <table class="layui-table" lay-skin="line">
         <colgroup>
             <col width="150">
@@ -31,16 +31,36 @@
             <thead>
                 <td>股票代码</td>
                 <td>股票名称</td>
+                <td>操作</td>
             </thead>
             <tbody>
                 <tr v-for="todo in stock_list">
                     <td v-text="todo['cpy_id']"></td>
-                    <td v-text="todo['name'] || '' "></td>
+                    <td v-text="stock_info[todo['cpy_id']]  "></td>
+                    <td><button class="layui-btn" v-on:click="deleteStock(todo['id'])"><i class="layui-icon">&#xe640;</i></button></td>
                 </tr>
             </tbody>
         </table>
+        
+            
+        
+    </table>
+    <div id='addStock' style="display:none;">
+    <table class="layui-table" skin='line'>
+                <thead>
+                    
+                </thead>
+                <tbody>
+                    <tr v-for="(val,cpy_id) in stock_info">
+                        <td><input type="checkbox" v-model="select_Stock" v-bind:value="cpy_id"></td>
+                        <td v-text="cpy_id"></td>
+                        <td v-text="val"></td>
+                    </tr>
+                </tbody>
     </table>
 </div>
+</div>
+
 {% endblock %} {% block script %}
 <script>
     var group_list = {{(group_list|json_encode|raw)}};
@@ -48,6 +68,7 @@
 <script>
     layui.use(['element', 'laypage', 'jquery', 'layer'], function () {
         var element = layui.element();
+        var $ = layui.jquery;
         element.init();
         var layer = layui.layer;
         var laypage = layui.laypage;
@@ -56,13 +77,23 @@
             data: {
                 group_list: group_list,
                 stock_list: [],
+                stock_info:[],
+                select_Group:0,
+                select_Stock:[]
             },
             created: function () {
-
+                var self = this;
+                this.$http.get('/admin/stock/info').then(function(resp){
+                    self.stock_info = resp.body;
+                    console.log(self.stock_info);
+                }).catch(function(resp){
+                    layer.msg('初始化股票信息失败')
+                });
             },
             methods: {
                 Stocklist: function (group_id) {
                     var self = this;
+                    self.select_Group = group_id;
                     this.$http.get('/admin/stock/group/' + group_id).then(function (resp) {
                         if (resp.body.status !== 200) {
                             layer.msg('获取失败');
@@ -73,6 +104,21 @@
                         layer.msg('获取失败');
                     });
 
+                },
+                addStockCode: function(group_id){
+                    layer.open({
+                        title:"添加股票",
+                        area:['400px','500px'],
+                        content:$("#addStock").html()
+                    });
+                },
+                deleteStock: function(user_stock_id){
+                    var self = this;
+                    this.$http.delete('/admin/stock/'+self.select_Group+'/'+user_stock_id).then(function(resp){
+                        
+                    }).catch(function(resp){
+                        layer.msg("错误信息")
+                    });
                 }
             }
         });
