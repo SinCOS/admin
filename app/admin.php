@@ -1,5 +1,7 @@
 <?php
-
+    header('Access-Control-Allow-Origin: *');
+header('Access-Control-Max-Age: 3628800');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
     $app->group('/admin', function () use ($app) {
         $app->get('/', function ($rst, $resp, $args) {
             return $resp;
