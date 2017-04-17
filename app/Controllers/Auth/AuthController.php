@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Admin\Controllers\Auth;
+namespace App\Controllers\Auth;
 
 use \Respect\Validation\Validator as v;
-use App\Admin\Controllers\Controller;
+use App\Controllers\Controller;
 
 class AuthController extends Controller {
         public function getSignUp($rst,$resp){

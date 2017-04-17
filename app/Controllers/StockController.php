@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Admin\Controllers;
+namespace App\Controllers;
 
 
 class StockController extends Controller{

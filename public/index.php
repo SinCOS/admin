@@ -76,16 +76,16 @@
     };
 
     $container['IndexController'] = function($container){
-        return new \App\Admin\Controllers\IndexController($container);
+        return new \App\Controllers\IndexController($container);
     };
     $container['AuthController'] = function($c){
-    return new \App\Admin\Controllers\Auth\AuthController($c);
+    return new \App\Controllers\Auth\AuthController($c);
     };
     $container['Validate'] = function($c){
         
     };
     $container['MemberController'] = function($c){
-        return new \App\Admin\Controllers\MemberController($c);
+        return new \App\Controllers\MemberController($c);
     };
     require '../app/admin.php';
     require '../app/bootstrap.php';
