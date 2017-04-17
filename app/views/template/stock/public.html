@@ -1,4 +1,5 @@
-{% extends 'template/body.html' %} {% block content %}
+{% extends 'template/body.html' %} 
+{% block content %}
 <div  id='app'>
     <table class="layui-table" lay-skin="line">
         <colgroup>
@@ -61,7 +62,8 @@
 </div>
 </div>
 
-{% endblock %} {% block script %}
+{% endblock %} 
+{% block script %}
 <script>
     var group_list = {{(group_list|json_encode|raw)}};
 </script>
@@ -108,7 +110,7 @@
                 addStockCode: function(group_id){
                     layer.open({
                         title:"添加股票",
-                        area:['400px','500px'],
+                        area:['400px','500px'],∂
                         content:$("#addStock").html()
                     });
                 },

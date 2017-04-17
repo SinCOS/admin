@@ -1,29 +1,38 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"> 
     {% block head %}
-        
-    {% endblock %}
+     <title>Document</title>
+    {% endblock %} 
     {% include "template/partial/css.html" %}
+
 </head>
 <style>
-    .container{
+    .container {
         min-height: 400px;
     }
 </style>
-<body>
-  <div class="container">
-    <div class="row">
-        {% block content %}
 
-        {% endblock %}
+<body>
+    <div class="container">
+        <div class="row">
+            {% block content %} 
+            
+            {% endblock %}
+        </div>
     </div>
-  </div>
 </body>
 {% include 'template/partial/js.html' %}
 <script>
-
 </script>
-{% block script %}
+{% block script %} 
 
 {% endblock %}
+
 </html>
+
+<html
