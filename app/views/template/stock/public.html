@@ -1,0 +1,82 @@
+{% extends 'template/body.html' %} {% block content %}
+<div class="row" id='app'>
+    <table class="layui-table" lay-skin="line">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col width="200">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>组名 <span v-on:click="addGroup(todo['id'])"><i >&#xe61f;</i>添加</span></th>
+                <th>显示股票</th>
+            </tr>
+        </thead>
+        <tbody>
+            <template>
+                <tr v-for="todo in group_list">
+                    <td v-text="todo['id']"></td>
+                    <td v-text="todo['name']"></td>
+                    <td><span v-on:click="Stocklist(todo['id'])"> <i class='layui-icon' >&#xe60a;</i>浏览</span>
+                        <span v-on:click="addStockCode(todo['id'])"><i >&#xe61f;</i>添加股票</span></td>
+                </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td rowspan="6" id="page"></td>
+            </tr>
+        </tfoot>
+        <table class='layui-table' style='margin-top:20px' lay-skin='line' v-show="stock_list.length > 0 ? true :false">
+            <thead>
+                <td>股票代码</td>
+                <td>股票名称</td>
+            </thead>
+            <tbody>
+                <tr v-for="todo in stock_list">
+                    <td v-text="todo['cpy_id']"></td>
+                    <td v-text="todo['name'] || '' "></td>
+                </tr>
+            </tbody>
+        </table>
+    </table>
+</div>
+{% endblock %} {% block script %}
+<script>
+    var group_list = {{(group_list|json_encode|raw)}};
+</script>
+<script>
+    layui.use(['element', 'laypage', 'jquery', 'layer'], function () {
+        var element = layui.element();
+        element.init();
+        var layer = layui.layer;
+        var laypage = layui.laypage;
+        var app = new Vue({
+            el: "#app",
+            data: {
+                group_list: group_list,
+                stock_list: [],
+            },
+            created: function () {
+
+            },
+            methods: {
+                Stocklist: function (group_id) {
+                    var self = this;
+                    this.$http.get('/admin/stock/group/' + group_id).then(function (resp) {
+                        if (resp.body.status !== 200) {
+                            layer.msg('获取失败');
+                            return false;
+                        }
+                        self.stock_list = resp.body.result;
+                    }).catch(function (resp) {
+                        layer.msg('获取失败');
+                    });
+
+                }
+            }
+        });
+    });
+</script>
+
+{% endblock %}

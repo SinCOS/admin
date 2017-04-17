@@ -15,12 +15,18 @@ class StockController extends Controller{
         ]);
     }
     public function getGroupStock($rst,$resp,$args){
+        $group_id = intval($args['group_id']);
         $list = $this->db->select("user_stock",['cpy_id','sg_id'],[
             'AND' => [
                 'sg_id' => intval($args['group_id']),
                 'status[>]' => 0
             ]
         ]);
+        return $resp->getBody()->write(json_encode([
+            'status' => 200,
+            'message' => '',
+            'result' => $list ?? [],
+        ]));
     }
     public function postStockGroup($rst,$resp,$args){
         if (!$rst->isXhr()) {return $resp;}

@@ -87,6 +87,9 @@
     $container['MemberController'] = function($c){
         return new \App\Controllers\MemberController($c);
     };
+    $container['StockController'] = function($c){
+        return new \App\Controllers\StockController($c);
+    };
     require '../app/admin.php';
     require '../app/bootstrap.php';
     

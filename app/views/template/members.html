@@ -20,44 +20,77 @@
   </thead>
   <tbody>
     <template>
-    <tr v-for="todo in user_list">
-      <td v-text="todo['id']"></td>
-      <td v-text="todo['username']"></td>
-      <td v-text="todo['reg_time']"></td>
-      <td v-text="todo['login_time']"></td>
-      <td v-text="todo['login_IP']"></td>
-      <td v-text="todo['total_login']"></td>
-    </tr>
+      <tr v-for="todo in user_list">
+        <td v-text="todo['id']"></td>
+        <td v-text="todo['username']"></td>
+        <td v-text="todo['reg_time']"></td>
+        <td v-text="todo['login_time']"></td>
+        <td v-text="todo['login_IP']"></td>
+        <td v-text="todo['total_login']"></td>
+      </tr>
   </tbody>
-  <tfoot id='page'>
+  <tfoot>
+    <tr>
+        <td rowspan="6" id="page"></td>
+    </tr>
   </tfoot>
 </table>
 {% endblock %} {% block script %}
 <script>
-  layui.use(['element', 'util', 'form', 'jquery'], function ()  {
-    var element = layui.element();
-    var form = layui.form();
-    var $ = layui.jquery;
-    var layer = layui.layer;
-    Vue.debug
-   var app =  new Vue({
-      el: "#app",
-      data: {
-        user_list: []
-      },
-      created: function() {
-        var self = this;
-        this.$http.get('/admin/member/list').then(function (resp) {
-          self.user_list = resp.body.result.data;
-        }).catch(function (resp) {
-          layer.msg('加载失败');
+  layui.use(['element', 'util', 'form', 'jquery', 'laypage'], function () {
+        var element = layui.element();
+        var form = layui.form();
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var laypage = layui.laypage;
+
+        function loadPage() {
+
+        }
+        var app = new Vue({
+          el: "#app",
+          data: {
+            user_list: [],
+            total: 1,
+          },
+          created: function () {
+            var self = this;
+            self.page(1);
+          },
+          mounted: function () {
+
+          },
+          methods: {
+
+            page: function (curr) {
+              var self = this;
+              self.$http.get('/admin/member/list', {
+                p: curr
+              }).then(function (resp) {
+                if(resp.body.status != 200){
+                  return false;
+                }
+                self.user_list = resp.body.result.data;
+                self.total = resp.body.result.total;
+              }).catch(function (resp) {
+                  layer.msg('加载失败');
+              });
+              var pages = Math.ceil(self.total / 20);
+              laypage({
+                    cont: "page",
+                    pages: pages > 0 ? pages : 1,
+                    jump: function (obj, first) {
+                      if (!first) {
+                        self.page(obj.curr)
+                      }
+                    }
+                  });
+                }
+              }
+            });
+
+
+
         });
-      },
-
-    })
-
-
-
-  });
 </script>
 {% endblock %}

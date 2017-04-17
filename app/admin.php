@@ -19,16 +19,17 @@
         return $resp;
     });
      $app->get('/member/list',"MemberController:getMembers");
-    $app->post('/group/public',function($rst,$resp,$args){
-         $data = $rst->getParsedBody();
+     $app->get('/stock/public',function($rst,$resp,$args){
+        if(!$rst->isXhr()){
+            $list = $this->db->select('stockGroup','*',[
+                    'uid' => 0,
+                    'ORDER' => ['id' => 'ASC']
+            ]);
+            return $this->view->render($resp,'template/stock/public.html',['group_list'=> $list ??[]]);
+        }
 
-         $err_code =200;
-         $resp->getBody()->write(json_encode([
-             'status' => $err_code,
-             'msg' => $msg
-         ]));
-         return $resp;
-    });
+     });
+    $app->get('/stock/group/{group_id:[0-9]+}',"StockController:getGroupStock");
     $app->get('/group/{uid:[0-9]+}/uid',function($rst,$resp,$args){
         $list = $this->db->select('stockGroup','*',[
             "AND" => [

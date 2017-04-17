@@ -9,13 +9,15 @@ class MemberController extends Controller
 
     public function getMembers($rst, $resp, $args)
     {
+        
         if(!$rst->isXhr()){
              return $this->view->render($resp,"template/members.html");
         }
+        $total = $this->db->count('user');
         $page = intval($rst->getQueryParams('p')) ;
         $page = $page === 0 ?1:$page;
         $_start = ($page -1) * 20;
-        $total = $this->db->count('user');
+        
 
         $list = $this->db->select("user", "*", [
                 "LIMIT" => [$_start,20],
