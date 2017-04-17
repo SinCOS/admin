@@ -88,9 +88,7 @@
     </div>
     {% include "template/partial/js.html" %}
     <script>
-        layui.config({
-            base: 'http://120.24.184.121/public/layui/lay/modules/',
-        });
+        
         var menu_json = null;
 
         var layer = null;
@@ -113,11 +111,18 @@
                     "\"></iframe>";
                 var title = $a.text();
                 if (url == undefined) return;
-                var result = element.tabAdd('tabCtrl', {
+                var tabTitle = $(".layui-tab[lay-filter='tabCtrl']").children('.layui-tab-title');
+                var exist = tabTitle.find("li[lay-id='" + id + "']")
+                var result = false;
+                if(exist.length> 0){
+                    result = true
+                }else{
+                    result = element.tabAdd('tabCtrl', {
                     title: title,
                     content: content,
                     id: id
-                });
+                      });
+                }
                 if (result) {
                     element.tabChange('tabCtrl', id);
                 }
