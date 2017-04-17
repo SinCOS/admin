@@ -1,4 +1,4 @@
-{% extends 'template/body.html' %} {% block content %}
+{% extends 'template/body.html' %} {% block container %}
 <table class="layui-table" lay-skin="line" id='app'>
   <colgroup>
     <col width="150">
@@ -19,7 +19,6 @@
     </tr>
   </thead>
   <tbody>
-    <template>
       <tr v-for="todo in user_list">
         <td v-text="todo['id']"></td>
         <td v-text="todo['username']"></td>
