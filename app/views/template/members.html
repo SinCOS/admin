@@ -1,54 +1,63 @@
-<html>
-
-<head>
-
-  {% include "template/partial/css.html" %}
-</head>
-
-<body>
-  <div class="container">
-    <div class="row">
-      <table class="layui-table" lay-skin="line">
-        <colgroup>
-          <col width="150">
-          <col width="200">
-          <col width="200">
-          <col width="200">
-          <col width="200">
-          <col width="200">
-        </colgroup>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>用户名</th>
-            <th>注册时间</th>
-            <th>登录时间</th>
-            <th>登录IP</th>
-            <th>登录次数</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for todo in userlist %}
-          <tr>
-            <td>{{ todo.id }}</td>
-            <td>{{ todo.username }}</td>
-            <td>{{ todo.reg_time }}</td>
-            <td>{{ todo.login_time }}</td>
-            <td>{{ todo.login_IP }}</td>
-            <td>{{ todo.total_login }}</td>
-
-          </tr>
-          {% endfor %}
-        </tbody>
-        <tfoot id='page'>
-          
-        </tfoot>
-      </table>
-    </div>
-  </div>
-</body>
-{% include 'template/partial/js.html' %}
+{% extends 'template/body.html' %} {% block content %}
+<table class="layui-table" lay-skin="line" id='app'>
+  <colgroup>
+    <col width="150">
+    <col width="200">
+    <col width="200">
+    <col width="200">
+    <col width="200">
+    <col width="200">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>用户名</th>
+      <th>注册时间</th>
+      <th>登录时间</th>
+      <th>登录IP</th>
+      <th>登录次数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <template>
+    <tr v-for="todo in user_list">
+      <td v-text="todo['id']"></td>
+      <td v-text="todo['username']"></td>
+      <td v-text="todo['reg_time']"></td>
+      <td v-text="todo['login_time']"></td>
+      <td v-text="todo['login_IP']"></td>
+      <td v-text="todo['total_login']"></td>
+    </tr>
+  </tbody>
+  <tfoot id='page'>
+  </tfoot>
+</table>
+{% endblock %} {% block script %}
 <script>
-  
+  layui.use(['element', 'util', 'form', 'jquery'], function ()  {
+    var element = layui.element();
+    var form = layui.form();
+    var $ = layui.jquery;
+    var layer = layui.layer;
+    Vue.debug
+   var app =  new Vue({
+      el: "#app",
+      data: {
+        user_list: []
+      },
+      created: function() {
+        var self = this;
+        this.$http.get('/admin/member/list').then(function (resp) {
+          self.user_list = resp.body.result.data;
+        }).catch(function (resp) {
+          layer.msg('加载失败');
+        });
+      },
+
+    })
+
+
+
+  });
 </script>
-</html>
+{% endblock %}

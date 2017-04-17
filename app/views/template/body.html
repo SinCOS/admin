@@ -1,54 +1,29 @@
 <html>
-
 <head>
-
-  {% include "template/partial/css.html" %}
+    {% block head %}
+        
+    {% endblock %}
+    {% include "template/partial/css.html" %}
 </head>
-
+<style>
+    .container{
+        min-height: 400px;
+    }
+</style>
 <body>
   <div class="container">
     <div class="row">
-      <table class="layui-table" lay-skin="line">
-        <colgroup>
-          <col width="150">
-          <col width="200">
-          <col width="200">
-          <col width="200">
-          <col width="200">
-          <col width="200">
-        </colgroup>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>用户名</th>
-            <th>注册时间</th>
-            <th>登录时间</th>
-            <th>登录IP</th>
-            <th>登录次数</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for todo in userlist %}
-          <tr>
-            <td>{{ todo.id }}</td>
-            <td>{{ todo.username }}</td>
-            <td>{{ todo.reg_time }}</td>
-            <td>{{ todo.login_time }}</td>
-            <td>{{ todo.login_IP }}</td>
-            <td>{{ todo.total_login }}</td>
+        {% block content %}
 
-          </tr>
-          {% endfor %}
-        </tbody>
-        <tfoot id='page'>
-          
-        </tfoot>
-      </table>
+        {% endblock %}
     </div>
   </div>
 </body>
 {% include 'template/partial/js.html' %}
 <script>
-  
+
 </script>
+{% block script %}
+
+{% endblock %}
 </html>
