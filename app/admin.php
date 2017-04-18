@@ -23,6 +23,8 @@
                   'uid' => 0,
                   'ORDER' => ['id' => 'ASC']
                 ]);
+
+                
                  return $this->view->render($resp, 'template/stock/public.html', ['group_list'=> $list ??[]]);
             }
         });
@@ -30,20 +32,8 @@
               $data = file_get_contents('http://120.24.184.121/public/cpy_info.json');
               echo $data;
         });
-        $app->delete('/stock/{group_id:[0-9]+}/{id:[0-9]+}', function ($rst, $resp, $args) {
-             $res_id = $this->db->delete('stockGroup', [
-            'AND' => [
-                'uid' => 0,
-                'sg_id' => intval($args['group_id']),
-                'id' => intval($args['id'])
-            ]
-              ]);
-              return $resp->getBody()->write(json_encode([
-            'status' => $res_id ? 200 :400,
-            'message' => '',
-            'result' => []
-              ]));
-        });
+        $app->post('/stock/{group_id:[0-9]+}',"StockController:postStock");
+        $app->delete('/stock/{group_id:[0-9]+}/{cpy_id:[0-9]+}',"StockController:delGroupStock");
         $app->get('/stock/group/{group_id:[0-9]+}', "StockController:getGroupStock");
         $app->get('/group/{uid:[0-9]+}/uid', function ($rst, $resp, $args) {
             $list = $this->db->select('stockGroup', '*', [

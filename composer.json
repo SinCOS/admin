@@ -5,7 +5,8 @@
         "monolog/monolog": "^1.22",
         "catfan/Medoo": "^1.2",
         "illuminate/database": "v5.4.17",
-        "respect/validation": "^1.1"
+        "respect/validation": "^1.1",
+        "predis/predis": "^1.1"
     },
     "autoload": {
         "psr-4":{

@@ -38,13 +38,11 @@
     };
     $container['redis'] = function ($c) {
         try {
-            $redis = new \Redis;
-            $redis->pconnect('127.0.0.1', 3679);
+            $redis = new Predis\Client();
             return $redis;
         } catch (Exception $e) {
-            print $e->getMessage();
-            $this->logger->addError($e->getMessage());
-            exit();
+            $c['logger']->addInfo($e->getMessage());
+            
         }
     };
 

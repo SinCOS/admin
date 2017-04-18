@@ -18,21 +18,31 @@ class StockController extends Controller
     public function postStock($rst,$resp,$args){
         $group_id = intval($args['group_id']);
         $data = $rst->getParams();
-        $stock = json_encode($data['stock']);
+        $stock = $data['stock'];
         if(!$stock){
-            return $this->json($resp,400,'','');
+            return $this->json($resp,'',400,'');
         }
-
-    }
+        
+        $redis = $this->redis;
+        $redis->select(2);
+        $result = $redis->pipeline(function($pipe)use($group_id,$stock){
+            $key = "group:{$group_id}";
+            $pipe->del($key);
+            $pipe->sadd($key,$stock);
+        });
+        return !empty($result) && $result[1] > 0 ?$this->json($resp,'',200,$result) : $resp;
+    }   
     public function getGroupStock($rst, $resp, $args)
     {
         $group_id = intval($args['group_id']);
-        $list = $this->db->select("user_stock", ['cpy_id','sg_id'], [
-            'AND' => [
-                'sg_id' => intval($args['group_id']),
-                'status[>]' => 0
-            ]
-        ]);
+        // $list = $this->db->select("user_stock", ['cpy_id','sg_id'], [
+        //     'AND' => [
+        //         'sg_id' => intval($args['group_id']),
+        //         'status[>]' => 0
+        //     ]
+        // ]);
+        $this->redis->select(2);
+        $list = $this->redis->smembers("group:{$group_id}");
         return $resp->getBody()->write(json_encode([
             'status' => 200,
             'message' => '',
@@ -66,13 +76,11 @@ class StockController extends Controller
     }
     public function delGroupStock($rst, $resp, $args)
     {
-        $id = intval($args['id']);
-        if ($id >0) {
-            $res = $this->db->update('user_stock', [
-                'status' => 0
-            ], [
-                'id' => $id
-            ]);
-        }
+        $id = intval($args['cpy_id']);
+        $group_id = intval($args['group_id']);
+        $this->redis->select(2);
+      
+        $result = $this->redis->srem("group:{$group_id}",$args['cpy_id']);
+        return $this->json($resp,'',$result === 1 ? 200  : 400,$result);
     }
 }
