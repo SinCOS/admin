@@ -113,7 +113,18 @@
                         content: $("#addStock"),
                         btn: ['确认'],
                         yes: function(yes,layero){
-                            alert(JSON.stringify(self.select_Stock));
+                            self.$http.post('/admin/stock/'+group_id,{stock:self.select_Stock}).then(function(resp){
+                                if(resp.body.status == 200){
+                                    layer.msg('保存成功');
+                                    
+                                }else{
+                                    layer.msg('保存失败');
+                                }
+                                layer.close(layero);
+                            }).catch(function(fail){
+                                layer.msg('网络错误');
+                            });
+                            
                         }
                     });
                 },

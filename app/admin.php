@@ -1,7 +1,5 @@
 <?php
-    header('Access-Control-Allow-Origin: *');
-header('Access-Control-Max-Age: 3628800');
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+
     $app->group('/admin', function () use ($app) {
         $app->get('/', function ($rst, $resp, $args) {
             return $resp;
@@ -9,14 +7,12 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
         $app->get('/login', "AuthController:getSignUp")->setName('auth.signup');
         $app->post('/login', 'AuthController:postSignUp');
         $app->get('/group/id', function ($rst, $resp, $args) {
-
               $list = $this->db->select("user_stock", '*', [
                   'AND' =>[
                   'status[>]' => 0,
                   'uid' => 1
                   ]
               ]);
-       
             $resp->getBody()->write(var_export($list));
             return $resp;
         });

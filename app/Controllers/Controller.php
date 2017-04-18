@@ -15,10 +15,12 @@ class Controller
             return $this->container->{$property};
         }
     }
-    public function success($xx)
+    public function json($resp,$message,$status,$result)
     {
-    }
-    public function error()
-    {
+        return $resp->getBody()->write(json_encode([
+            'status' => $status,
+            'message' => $message,
+            'result' => $result
+        ]));
     }
 }

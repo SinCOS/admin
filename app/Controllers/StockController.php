@@ -15,6 +15,15 @@ class StockController extends Controller
             ]
         ]);
     }
+    public function postStock($rst,$resp,$args){
+        $group_id = intval($args['group_id']);
+        $data = $rst->getParams();
+        $stock = json_encode($data['stock']);
+        if(!$stock){
+            return $this->json($resp,400,'','');
+        }
+
+    }
     public function getGroupStock($rst, $resp, $args)
     {
         $group_id = intval($args['group_id']);
@@ -32,11 +41,9 @@ class StockController extends Controller
     }
     public function postStockGroup($rst, $resp, $args)
     {
-        if (!$rst->isXhr()) {
-            return $resp;
-        }
-            $data = $rst->getParams();
+        $data = $rst->getParams();
         if (!v::noWhitespace()->vaildate($data['name'])) {
+
         }
            $id =  $this->db->insert('stockGroup', [
                 'uid' => 0,

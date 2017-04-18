@@ -28,70 +28,9 @@
         'debug' => true,
         'mode' => 'development'
     ]);
-    $container = $app->getContainer();
-    
-
-    $container['view'] = function($c)use($container){
-        $view = new \Slim\Views\Twig('../app/views',[
-            'cache' => false
-        ]);
-        $view->addExtension(new Slim\Views\TwigExtension(
-            $container->router,
-            $container->request->getUri()    
-        ));
-        //$basePath = rtrim()
-        return $view;
-    };
-
-    $container['logger'] = function($c){
-        $logger = new \Monolog\Logger('debug_logger');
-        $file_handler = new \Monolog\Handler\StreamHandler('../logs/'.date('Y-m-d').'.log');
-        $logger->pushHandler($file_handler);
-        return $logger;
-    };
-
-    $container['db'] = function($c){
-        try{
-
-             $medoo = new \Medoo\Medoo($c['settings']['db']);
-             
-            
-             return $medoo;
-        } catch(Exception $e){
-
-        }
-       
-    };
-    $container['redis'] = function($c){
-        try{
-            $redis = new \Redis;
-            $redis->pconnect('127.0.0.1',3679);
-            return $redis;
-        } catch (Exception $e){
-            print $e->getMessage();
-            $this->logger->addError($e->getMessage());
-            exit();
-        }
-      
-    };
-
-    $container['IndexController'] = function($container){
-        return new \App\Controllers\IndexController($container);
-    };
-    $container['AuthController'] = function($c){
-    return new \App\Controllers\Auth\AuthController($c);
-    };
-    $container['Validate'] = function($c){
-        
-    };
-    $container['MemberController'] = function($c){
-        return new \App\Controllers\MemberController($c);
-    };
-    $container['StockController'] = function($c){
-        return new \App\Controllers\StockController($c);
-    };
-    require '../app/admin.php';
     require '../app/bootstrap.php';
+    require '../app/admin.php';
+    
     
     $app->run();
 
