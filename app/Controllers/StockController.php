@@ -71,7 +71,6 @@ class StockController extends Controller
             if($res){
                 $redis->set("publicGroup",json_encode($res));
             }
-            
         }
 
     }
