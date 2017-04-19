@@ -2,7 +2,7 @@
 
 
 namespace App\Controllers;
-
+use Respect\Validation\Validator as v;
 class StockController extends Controller
 {
         // admin/user/1/grp
@@ -52,16 +52,28 @@ class StockController extends Controller
     public function postStockGroup($rst, $resp, $args)
     {
         $data = $rst->getParams();
-        if (!v::noWhitespace()->vaildate($data['name'])) {
+        // if (!v::noWhitespace()->vaildator($data['name'])) {
 
-        }
-           $id =  $this->db->insert('stockGroup', [
+        // }
+        $redis = $this->redis;
+        $redis->select(2);
+        $id =  $this->db->insert('stockGroup', [
                 'uid' => 0,
                 'status' => 1,
                 'created_at' => date("Y-m-d h:i:s"),
                 'name' => $data['name'],
                 'public' => 1
             ]);
+        if($id >0 ){
+            $res = $this->db->select('stockGroup',['id','name'],[
+                'uid' => 0
+            ]);
+            if($res){
+                $redis->set("publicGroup",json_encode($res));
+            }
+            
+        }
+
     }
     public function delStockGroup($rst, $resp, $args)
     {
