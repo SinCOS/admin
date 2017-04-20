@@ -70,8 +70,10 @@ class StockController extends Controller
             ]);
             if($res){
                 $redis->set("publicGroup",json_encode($res));
+                return $this->json($resp,'',200,[]);
             }
         }
+        return $this->json($resp,'',400,[]);
 
     }
     public function delStockGroup($rst, $resp, $args)

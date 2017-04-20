@@ -94,6 +94,10 @@
                 addGroup: function(){
                     var self = this;
                     layer.prompt(function(val,index,elem){
+                        var value = $.trim(val);
+                        if(value.length == 0 ){
+                            return layer.msg('请输入组名');
+                        }
                         self.$http.post("/admin/stock/group",{name:val}).then(resp=>{
                             if(resp.body.status == 200){
                                 layer.msg('保存成功');
