@@ -2,7 +2,9 @@
 
 
 namespace App\Controllers;
+
 use Respect\Validation\Validator as v;
+
 class StockController extends Controller
 {
         // admin/user/1/grp
@@ -15,23 +17,42 @@ class StockController extends Controller
             ]
         ]);
     }
-    public function postStock($rst,$resp,$args){
+    public function postStock($rst, $resp, $args)
+    {
         $group_id = intval($args['group_id']);
         $data = $rst->getParams();
         $stock = $data['stock'];
-        if(!$stock){
-            return $this->json($resp,'',400,'');
+        if (!$stock) {
+            return $this->json($resp, '', 400, '');
         }
         
         $redis = $this->redis;
         $redis->select(2);
-        $result = $redis->pipeline(function($pipe)use($group_id,$stock){
+        $result = $redis->pipeline(function ($pipe) use ($group_id, $stock) {
             $key = "group:{$group_id}";
             $pipe->del($key);
-            $pipe->sadd($key,$stock);
+            $pipe->sadd($key, $stock);
         });
-        return !empty($result) && $result[1] > 0 ?$this->json($resp,'',200,$result) : $resp;
-    }   
+        return !empty($result) && $result[1] > 0 ?$this->json($resp, '', 200, $result) : $resp;
+    }
+    public function delStockGroup($rst,$resp,$args){
+        $data = $rst->getParams();
+        $group_id = intval($data['group_id']);
+        $this->redis->select(2);
+        $res = $this->db->delete('stockGroup',[
+            'AND' => [
+                'uid' => 0,
+                'id' => $group_id
+            ] 
+        ]);
+        if($res){
+            $this->redis->del("group:{$group_id}");
+            if($this->update_StockGroup()){
+                 return $this->json($resp, '', 200, []);
+            }
+        }
+         return $this->json($resp, '', 400, []);
+    }
     public function getGroupStock($rst, $resp, $args)
     {
         $group_id = intval($args['group_id']);
@@ -49,6 +70,16 @@ class StockController extends Controller
             'result' => $list ?? [],
         ]));
     }
+    private function update_StockGroup(){
+          $res = $this->db->select('stockGroup', ['id','name'], [
+                'uid' => 0
+            ]);
+            if ($res) {
+                $redis->set("publicGroup", json_encode($res));
+                return true;
+            }
+            return false;
+    }
     public function postStockGroup($rst, $resp, $args)
     {
         $data = $rst->getParams();
@@ -64,36 +95,21 @@ class StockController extends Controller
                 'name' => $data['name'],
                 'public' => 1
             ]);
-        if($id >0 ){
-            $res = $this->db->select('stockGroup',['id','name'],[
-                'uid' => 0
-            ]);
-            if($res){
-                $redis->set("publicGroup",json_encode($res));
-                return $this->json($resp,'',200,[]);
-            }
-        }
-        return $this->json($resp,'',400,[]);
-
-    }
-    public function delStockGroup($rst, $resp, $args)
-    {
-        $id = intval($args['group_id']);
         if ($id >0) {
-            $this->db->update('stock_group', [
-                'status'=>0
-                ], [
-                    'id' => $id
-                ]);
+           if($this->update_StockGroup()){
+               return $this->json($resp, '', 200, []);
+           }
         }
+        return $this->json($resp, '', 400, []);
     }
+
     public function delGroupStock($rst, $resp, $args)
     {
         $id = intval($args['cpy_id']);
         $group_id = intval($args['group_id']);
         $this->redis->select(2);
       
-        $result = $this->redis->srem("group:{$group_id}",$args['cpy_id']);
-        return $this->json($resp,'',$result === 1 ? 200  : 400,$result);
+        $result = $this->redis->srem("group:{$group_id}", $args['cpy_id']);
+        return $this->json($resp, '', $result === 1 ? 200  : 400, $result);
     }
 }

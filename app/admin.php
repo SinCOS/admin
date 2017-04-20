@@ -32,6 +32,7 @@
               $data = file_get_contents('http://120.24.184.121/public/cpy_info.json');
               echo $data;
         });
+        $app->delete('/stock/group',"StockController:delStockGroup");
         $app->post('/stock/group',"StockController:postStockGroup");
         $app->post('/stock/{group_id:[0-9]+}',"StockController:postStock");
         $app->delete('/stock/{group_id:[0-9]+}/{cpy_id:[0-9]+}',"StockController:delGroupStock");
