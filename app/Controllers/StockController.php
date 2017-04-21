@@ -36,9 +36,9 @@ class StockController extends Controller
         return !empty($result) && $result[1] > 0 ?$this->json($resp, '', 200, $result) : $resp;
     }
     public function delStockGroup($rst,$resp,$args){
-        $data = $rst->getParams();
-        $group_id = intval($data['group_id']);
-        $this->redis->select(2);
+       
+        $group_id = intval($args['group_id']);
+       
         $res = $this->db->delete('stockGroup',[
             'AND' => [
                 'uid' => 0,
@@ -46,12 +46,12 @@ class StockController extends Controller
             ] 
         ]);
         if($res){
-            $this->redis->del("group:{$group_id}");
-            if($this->update_StockGroup()){
-                 return $this->json($resp, '', 200, []);
+          
+            if($this->update_StockGroup($group_id)){
+                 return $this->json($resp, $this->db->log(), 200, $res);
             }
         }
-         return $this->json($resp, '', 400, []);
+         return $this->json($resp, '', 400, $res);
     }
     public function getGroupStock($rst, $resp, $args)
     {
@@ -70,12 +70,14 @@ class StockController extends Controller
             'result' => $list ?? [],
         ]));
     }
-    private function update_StockGroup(){
-          $res = $this->db->select('stockGroup', ['id','name'], [
+    private function update_StockGroup($group_id){
+            $this->redis->select(2);
+            $this->redis->del("group:{$group_id}");
+             $res = $this->db->select('stockGroup', ['id','name'], [
                 'uid' => 0
             ]);
             if ($res) {
-                $redis->set("publicGroup", json_encode($res));
+                $this->redis->set("publicGroup", json_encode($res));
                 return true;
             }
             return false;
@@ -96,7 +98,7 @@ class StockController extends Controller
                 'public' => 1
             ]);
         if ($id >0) {
-           if($this->update_StockGroup()){
+           if($this->update_StockGroup($id)){
                return $this->json($resp, '', 200, []);
            }
         }

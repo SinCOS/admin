@@ -95,8 +95,8 @@
             methods: {
                 deleteStockGroup:function(group_id,index){
                     var self = this ;
-                    layer.confirm(function(elem){
-                        self.$http.delete('/admin/stock/group',{group_id:group_id}).then(resp=>{
+                    layer.confirm('是否删除此组',function(elem){
+                        self.$http.delete('/admin/stock/group/'+group_id).then(resp=>{
                             layer.msg('删除成功');
                             self.group_list.splice(index,1);
                         }).catch(resp=>{
