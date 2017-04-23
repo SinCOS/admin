@@ -1,9 +1,9 @@
 <?php
     
-    $app->add(function($req,$res,$next){
-        $response = $next($req,$res);
-        return $response->withHeader('Access-Control-Allow-Origin',"*")
-                        ->withHeader('Access-Control-Allow-Headers','X-Requested-With, Content-Type, Accept, Origin, Authorization')
+    $app->add(function ($req, $res, $next) {
+        $response = $next($req, $res);
+        return $response->withHeader('Access-Control-Allow-Origin', "*")
+                        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
                         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     });
     
@@ -42,7 +42,7 @@
             return $redis;
         } catch (Exception $e) {
             $c['logger']->addInfo($e->getMessage());
-            
+            exit();
         }
     };
 
