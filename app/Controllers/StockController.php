@@ -121,8 +121,8 @@ class StockController extends Controller
             ]);
         
         if ($id >0) {
-            $group_info = $this->get_GroupInfo($id);
-            var_dump($group_info);
+            $group_id = $this->db->id();
+            $group_info = $this->get_GroupInfo($group_id);
             if ($this->update_StockGroup($id, $group_info)) {
                 return $this->json($resp, '', 200, []);
             }
