@@ -33,7 +33,7 @@ class StockController extends Controller
         $redis = $this->redis;
         $redis->select(2);
         $key = $this->get_GroupKey($group_info);
-        $result = $redis->pipeline(function ($pipe) use ($group_id, $stock) {
+        $result = $redis->pipeline(function ($pipe) use ($group_id, $stock,$key) {
             $pipe->del($key);
             $pipe->sadd($key, $stock);
         });
