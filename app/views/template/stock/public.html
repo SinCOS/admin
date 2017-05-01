@@ -15,7 +15,7 @@
             </tr>
         </thead>
         <tbody>
-                <tr v-for="todo in group_list">
+                <tr v-for="(todo,index) in group_list">
                     <td v-text="todo['id']"></td>
                     <td v-text="todo['name']"></td>
                     <td><span v-on:click="Stocklist(todo['id'])"> <i class='layui-icon' >&#xe60a;</i>浏览</span>
@@ -178,7 +178,7 @@
                     this.$http.delete('/admin/stock/' + self.select_Group + '/' + cpy_id).then(
                         function (resp) {
                             if(resp.body.status == 200){
-                                self.stock_list.splice(index+1,1)
+                                self.stock_list.splice(index,1)
                             }
                         }).catch(function (resp) {
                              layer.msg("删除失败")
