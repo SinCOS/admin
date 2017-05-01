@@ -20,22 +20,40 @@
         $app->get('/stock/public', function ($rst, $resp, $args) {
             if (!$rst->isXhr()) {
                 $list = $this->db->select('stockGroup', '*', [
-                  'uid' => 0,
+                    'AND' => [
+                        'uid' => 0,
+                        'status' => 1,
+                        'public' => 1,
+                    ],
                   'ORDER' => ['id' => 'ASC']
                 ]);
 
                 
-                 return $this->view->render($resp, 'template/stock/public.html', ['group_list'=> $list ??[]]);
+                return $this->view->render($resp, 'template/stock/public.html', ['group_list'=> $list ??[]]);
+            }
+        });
+        $app->get('/stock/vip', function ($rst, $resp, $args) {
+            if (!$rst->isXhr()) {
+                $list = $this->db->select('stockGroup', '*', [
+                    'AND' => [
+                        'uid' => 0,
+                        'public' => 0,
+                        'status' => 1
+                    ],
+                    'ORDER' => ['id'=>'ASC']
+                    
+                ]);
+                return $this->view->render($resp,'template/stock/public.html',['group_list' => $list ?? []]);
             }
         });
         $app->get('/stock/info', function ($rst, $resp) {
               $data = file_get_contents('http://120.24.184.121/public/cpy_info.json');
               echo $data;
         });
-        $app->delete('/stock/group/{group_id:[0-9]+}',"StockController:delStockGroup");
-        $app->post('/stock/group',"StockController:postStockGroup");
-        $app->post('/stock/{group_id:[0-9]+}',"StockController:postStock");
-        $app->delete('/stock/{group_id:[0-9]+}/{cpy_id:[0-9]+}',"StockController:delGroupStock");
+        $app->delete('/stock/group/{group_id:[0-9]+}', "StockController:delStockGroup");
+        $app->post('/stock/group', "StockController:postStockGroup");
+        $app->post('/stock/{group_id:[0-9]+}', "StockController:postStock");
+        $app->delete('/stock/{group_id:[0-9]+}/{cpy_id:[0-9]+}', "StockController:delGroupStock");
         $app->get('/stock/group/{group_id:[0-9]+}', "StockController:getGroupStock");
         $app->get('/group/{uid:[0-9]+}/uid', function ($rst, $resp, $args) {
             $list = $this->db->select('stockGroup', '*', [
@@ -70,5 +88,4 @@
             $data = $rst->getQueryParams();
             $user['email'] = filter_var($data['email'], FILTER_VALIDATE_EMAIL);
         });
-
     });

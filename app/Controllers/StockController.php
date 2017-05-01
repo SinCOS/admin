@@ -17,6 +17,10 @@ class StockController extends Controller
             ]
         ]);
     }
+    private function get_GroupKey($group_info)
+    {
+        return ($group_info && $group_info['public'] == 1) ? "group:{$group_info['id']}" : "vipgroup:{$group_info['id']}";
+    }
     public function postStock($rst, $resp, $args)
     {
         $group_id = intval($args['group_id']);
@@ -25,66 +29,83 @@ class StockController extends Controller
         if (!$stock) {
             return $this->json($resp, '', 400, '');
         }
-        
+        $group_info = $this->get_GroupInfo($group_id);
         $redis = $this->redis;
         $redis->select(2);
+        $key = $this->get_GroupKey($group_info);
         $result = $redis->pipeline(function ($pipe) use ($group_id, $stock) {
-            $key = "group:{$group_id}";
             $pipe->del($key);
             $pipe->sadd($key, $stock);
         });
         return !empty($result) && $result[1] > 0 ?$this->json($resp, '', 200, $result) : $resp;
     }
-    public function delStockGroup($rst,$resp,$args){
+    public function delStockGroup($rst, $resp, $args)
+    {
        
         $group_id = intval($args['group_id']);
-       
-        $res = $this->db->delete('stockGroup',[
+        $group_info =  $this->get_GroupInfo($group_id);
+         
+        $res = $this->db->update('stockGroup', ['status' => 0], [
             'AND' => [
                 'uid' => 0,
                 'id' => $group_id
-            ] 
+            ]
         ]);
-        if($res){
-          
-            if($this->update_StockGroup($group_id)){
+        if ($res) {
+            if ($this->update_StockGroup($group_id, $group_info)) {
                  return $this->json($resp, $this->db->log(), 200, $res);
             }
         }
          return $this->json($resp, '', 400, $res);
     }
+    private function get_GroupInfo($group_id)
+    {
+        return  $this->db->get('stockGroup', [
+            'id' =>$group_id
+        ]);
+    }
     public function getGroupStock($rst, $resp, $args)
     {
         $group_id = intval($args['group_id']);
-        // $list = $this->db->select("user_stock", ['cpy_id','sg_id'], [
-        //     'AND' => [
-        //         'sg_id' => intval($args['group_id']),
-        //         'status[>]' => 0
-        //     ]
-        // ]);
+        $group_info = $this->get_GroupInfo($group_id);
+        
         $this->redis->select(2);
-        $list = $this->redis->smembers("group:{$group_id}");
+        $key = $this->get_GroupKey($group_info);
+        $list = $this->redis->smembers($key);
+       
         return $resp->getBody()->write(json_encode([
             'status' => 200,
             'message' => '',
             'result' => $list ?? [],
         ]));
     }
-    private function update_StockGroup($group_id){
+    private function update_StockGroup($group_id, $group_info)
+    {
             $this->redis->select(2);
-            $this->redis->del("group:{$group_id}");
-             $res = $this->db->select('stockGroup', ['id','name'], [
-                'uid' => 0
-            ]);
-            if ($res) {
-                $this->redis->set("publicGroup", json_encode($res));
-                return true;
+            $key = $this->get_GroupKey($group_info);
+            $this->redis->del($key);
+            $public = isset($group_info['public']) ? $group_info['public'] : 1;
+            $res = $this->db->select('stockGroup', ['id','name'], [
+                'AND' => [
+                     'uid' => 0,
+                     'public' => $public,
+                     'status[>]' => 0
+                ]
+               
+             ]);
+        if ($res) {
+            if ($public == 1) {
+                 $this->redis->set("publicGroup", json_encode($res));
+            } else {
+                $this->redis->set('vipGroup', json_encode($res));
             }
+            return true;
+        }
             return false;
     }
     public function postStockGroup($rst, $resp, $args)
     {
-        $data = $rst->getParams();
+        $data = $rst->getParseBody();
         // if (!v::noWhitespace()->vaildator($data['name'])) {
 
         // }
@@ -95,12 +116,13 @@ class StockController extends Controller
                 'status' => 1,
                 'created_at' => date("Y-m-d h:i:s"),
                 'name' => $data['name'],
-                'public' => 1
+                'public' => isset($data['public']) ? (int)$data['public'] : 1,
             ]);
+        $group_info = $this->get_GroupInfo($group_id);
         if ($id >0) {
-           if($this->update_StockGroup($id)){
-               return $this->json($resp, '', 200, []);
-           }
+            if ($this->update_StockGroup($id, $group_info)) {
+                return $this->json($resp, '', 200, []);
+            }
         }
         return $this->json($resp, '', 400, []);
     }
@@ -109,9 +131,10 @@ class StockController extends Controller
     {
         $id = intval($args['cpy_id']);
         $group_id = intval($args['group_id']);
+        $group_info = $this->get_GroupInfo($group_id);
         $this->redis->select(2);
-      
-        $result = $this->redis->srem("group:{$group_id}", $args['cpy_id']);
+        $key = $this->get_GroupKey($group_info);
+        $result = $this->redis->srem( $key, $args['cpy_id']);
         return $this->json($resp, '', $result === 1 ? 200  : 400, $result);
     }
 }
