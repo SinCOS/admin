@@ -89,7 +89,7 @@ class StockController extends Controller
                 'AND' => [
                      'uid' => 0,
                      'public' => $public,
-                     'status[>]' => 0
+                     'status' => 1
                 ]
                
              ]);
