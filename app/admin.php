@@ -43,7 +43,10 @@
                     'ORDER' => ['id'=>'ASC']
                     
                 ]);
-                return $this->view->render($resp,'template/stock/public.html',['group_list' => $list ?? []]);
+                return $this->view->render($resp,'template/stock/public.html',[
+                    'group_list' => $list ?? [],
+                    'public' => 0,
+                    ]);
             }
         });
         $app->get('/stock/info', function ($rst, $resp) {

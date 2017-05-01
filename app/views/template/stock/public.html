@@ -65,9 +65,11 @@
 {% block script %}
 <script>
     var group_list = {{(group_list | json_encode | raw)}};
+    var public = {{ public | default('1') }};
 </script>
 
 <script>
+
     layui.use(['element', 'laypage', 'jquery', 'layer'], function () {
         var element = layui.element();
         var $ = layui.jquery;
@@ -111,7 +113,7 @@
                         if(value.length == 0 ){
                             return layer.msg('请输入组名');
                         }
-                        self.$http.post("/admin/stock/group",{name:val}).then(resp=>{
+                        self.$http.post("/admin/stock/group",{name:val,public:public}).then(resp=>{
                             if(resp.body.status == 200){
                                 layer.msg('保存成功');
                                 window.location = window.location;
