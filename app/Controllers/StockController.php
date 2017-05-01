@@ -60,7 +60,7 @@ class StockController extends Controller
     }
     private function get_GroupInfo($group_id)
     {
-        return  $this->db->get('stockGroup', [
+        return  $this->db->get('stockGroup', '*',[
             'id' =>$group_id
         ]);
     }
@@ -85,6 +85,7 @@ class StockController extends Controller
             $key = $this->get_GroupKey($group_info);
             $this->redis->del($key);
             $public = isset($group_info['public']) ? $group_info['public'] : 1;
+
             $res = $this->db->select('stockGroup', ['id','name'], [
                 'AND' => [
                      'uid' => 0,
@@ -105,7 +106,7 @@ class StockController extends Controller
     }
     public function postStockGroup($rst, $resp, $args)
     {
-        $data = $rst->getParseBody();
+        $data = $rst->getParsedBody();
         // if (!v::noWhitespace()->vaildator($data['name'])) {
 
         // }
@@ -118,8 +119,10 @@ class StockController extends Controller
                 'name' => $data['name'],
                 'public' => isset($data['public']) ? (int)$data['public'] : 1,
             ]);
-        $group_info = $this->get_GroupInfo($group_id);
+        
         if ($id >0) {
+            $group_info = $this->get_GroupInfo($id);
+            var_dump($group_info);
             if ($this->update_StockGroup($id, $group_info)) {
                 return $this->json($resp, '', 200, []);
             }
