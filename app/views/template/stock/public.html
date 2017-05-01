@@ -10,7 +10,7 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>组名 <span v-on:click="addGroup()"><i >&#xe61f;</i>添加</span></th>
+                <th>组名 <span v-on:click="addGroup()"><i class='layui-icon'>&#xe61f;</i>添加</span></th>
                 <th>显示股票</th>
             </tr>
         </thead>
@@ -19,7 +19,7 @@
                     <td v-text="todo['id']"></td>
                     <td v-text="todo['name']"></td>
                     <td><span v-on:click="Stocklist(todo['id'])"> <i class='layui-icon' >&#xe60a;</i>浏览</span>
-                        <span v-on:click="addStockCode(todo['id'])"><i >&#xe61f;</i>添加股票</span>
+                        <span v-on:click="addStockCode(todo['id'])"><i  class='layui-icon'>&#xe61f;</i>添加股票</span>
                         <button class="layui-btn" v-on:click="deleteStockGroup(todo['id'],index)"><i class="layui-icon">&#xe640;</i></button>
                         </td>
                 </tr>
