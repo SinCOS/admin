@@ -1,5 +1,4 @@
-{% extends "template/body.html" %} 
-{% block container %}
+{% extends "template/body.html" %} {% block container %}
 <div id='app'>
     <table class="layui-table" lay-skin="line">
         <colgroup>
@@ -15,14 +14,14 @@
             </tr>
         </thead>
         <tbody>
-                <tr v-for="(todo,index) in group_list">
-                    <td v-text="todo['id']"></td>
-                    <td v-text="todo['name']"></td>
-                    <td><span v-on:click="Stocklist(todo['id'])"> <i class='layui-icon' >&#xe60a;</i>浏览</span>
-                        <span v-on:click="addStockCode(todo['id'])"><i  class='layui-icon'>&#xe61f;</i>添加股票</span>
-                        <button class="layui-btn" v-on:click="deleteStockGroup(todo['id'],index)"><i class="layui-icon">&#xe640;</i></button>
-                        </td>
-                </tr>
+            <tr v-for="(todo,index) in group_list">
+                <td v-text="todo['id']"></td>
+                <td v-text="todo['name']"></td>
+                <td><span v-on:click="Stocklist(todo['id'])"> <i class='layui-icon' >&#xe60a;</i>浏览</span>
+                    <span v-on:click="addStockCode(todo['id'])"><i  class='layui-icon'>&#xe61f;</i>添加股票</span>
+                    <button class="layui-btn" v-on:click="deleteStockGroup(todo['id'],index)"><i class="layui-icon">&#xe640;</i></button>
+                </td>
+            </tr>
         </tbody>
         <tfoot>
             <tr>
@@ -58,18 +57,25 @@
             </tbody>
         </table>
     </div>
-   
+
 </div>
 
-{% endblock %} 
-{% block script %}
+{% endblock %} {% block script %}
 <script>
-    var group_list = {{(group_list | json_encode | raw)}};
-    var public = {{ public | default('1') }};
+    var group_list = {
+        {
+            (group_list | json_encode | raw)
+        }
+    };
+    var public = {
+        {
+            public |
+                default ('1')
+        }
+    };
 </script>
 
 <script>
-
     layui.use(['element', 'laypage', 'jquery', 'layer'], function () {
         var element = layui.element();
         var $ = layui.jquery;
@@ -95,30 +101,33 @@
                 });
             },
             methods: {
-                deleteStockGroup:function(group_id,index){
-                    var self = this ;
-                    layer.confirm('是否删除此组',function(elem){
-                        self.$http.delete('/admin/stock/group/'+group_id).then(resp=>{
+                deleteStockGroup: function (group_id, index) {
+                    var self = this;
+                    layer.confirm('是否删除此组', function (elem) {
+                        self.$http.delete('/admin/stock/group/' + group_id).then(resp => {
                             layer.msg('删除成功');
-                            self.group_list.splice(index,1);
-                        }).catch(resp=>{
+                            self.group_list.splice(index, 1);
+                        }).catch(resp => {
                             layer.msg('删除失败');
                         });
                     });
                 },
-                addGroup: function(){
+                addGroup: function () {
                     var self = this;
-                    layer.prompt(function(val,index,elem){
+                    layer.prompt(function (val, index, elem) {
                         var value = $.trim(val);
-                        if(value.length == 0 ){
+                        if (value.length == 0) {
                             return layer.msg('请输入组名');
                         }
-                        self.$http.post("/admin/stock/group",{name:val,public:public}).then(resp=>{
-                            if(resp.body.status == 200){
+                        self.$http.post("/admin/stock/group", {
+                            name: val,
+                            public: public
+                        }).then(resp => {
+                            if (resp.body.status == 200) {
                                 layer.msg('保存成功');
                                 window.location = window.location;
                             }
-                        }).catch(fail=>{
+                        }).catch(fail => {
                             layer.msg('添加失败');
                         });
                     });
@@ -145,9 +154,9 @@
                             return false;
                         }
                         //self.stock_list = resp.body.result;
-                      
+
                         self.select_Stock = resp.body.result;
-                      
+
                     }).catch(function (resp) {
                         layer.msg('获取失败');
                     });
@@ -157,32 +166,41 @@
                         area: ['400px', '500px'],
                         content: $("#addStock"),
                         btn: ['确认'],
-                        yes: function(yes,layero){
-                            self.$http.post('/admin/stock/'+group_id,{stock:self.select_Stock}).then(function(resp){
-                                if(resp.body.status == 200){
+                        yes: function (yes, layero) {
+                            self.$http.post('/admin/stock/' + group_id, {
+                                stock: self.select_Stock
+                            }).then(function (resp) {
+                                if (resp.body.status == 200) {
                                     layer.msg('保存成功');
                                     self.Stocklist(group_id);
-                                }else{
+                                } else {
                                     layer.msg('保存失败');
                                 }
                                 layer.close(layero);
-                            }).catch(function(fail){
+                            }).catch(function (fail) {
                                 layer.msg('网络错误');
                             });
-                            
+
                         }
                     });
                 },
-                deleteStock: function (cpy_id,index) {
+                deleteStock: function (cpy_id, index) {
                     var self = this;
-                    this.$http.delete('/admin/stock/' + self.select_Group + '/' + cpy_id).then(
-                        function (resp) {
-                            if(resp.body.status == 200){
-                                self.stock_list.splice(index,1)
-                            }
-                        }).catch(function (resp) {
-                             layer.msg("删除失败")
+                    layer.confirm('是否删除此股票', function (elem) {
+                        self.$http.delete('/admin/stock/' + self.select_Group + '/' +
+                            cpy_id).then(
+                            function (resp) {
+                                if (resp.body.status == 200) {
+                                    self.stock_list.splice(index, 1)
+                                } else {
+                                    layer.msg("删除失败");
+                                }
+                            }).catch(function (resp) {
+                            layer.msg("删除失败");
+                        });
+                        layer.close(elem);
                     });
+
                 }
             }
         });
