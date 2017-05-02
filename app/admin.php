@@ -1,9 +1,7 @@
 <?php
 
     $app->group('/admin', function () use ($app) {
-        $app->get('/', function ($rst, $resp, $args) {
-            return $resp;
-        });
+        $app->get('', 'IndexController:index');
         $app->get('/login', "AuthController:getSignUp")->setName('auth.signup');
         $app->post('/login', 'AuthController:postSignUp');
         $app->get('/group/id', function ($rst, $resp, $args) {
