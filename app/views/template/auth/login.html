@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet">
+    <title>后台登录</title>
+    {% include 'template/partial/css.html' %}
 </head>
 
 <body>
@@ -20,7 +19,7 @@
                         系统登录
                     </div>
                     <div class="panel-body">
-                        <form class="layui-form layui-form-pane" action="" method="post">
+                        <form class="layui-form layui-form-pane">
                             <div class="layui-form-item">
                                 <label class="layui-form-label">用户名</label>
                                 <div class="layui-input-inline">
@@ -40,7 +39,10 @@
                                 <div class="layui-inline">
                                     <label class="layui-form-label">验证码</label>
                                     <div class="layui-input-inline">
-                                        <input type="text" name="verify_code" lay-verify="required" placeholder="请输入验证码" autocomplete="off" class="layui-input">
+                                        <input type="text" name="verify_code" lay-verify="verify" placeholder="请输入验证码" autocomplete="off" class="layui-input">
+                                    </div>
+                                    <div class="layui-form-mid layui-word-aux" style="padding: 0px;">
+                                        <img src="/admin/verify_code" height="38px" alt="" onclick="this.src = '/admin/verify_code?t='+ (new Date).getTime();">
                                     </div>
 
                                 </div>
@@ -50,7 +52,7 @@
                             </div>
 
                             <div class="layui-form-item">
-                                <button class="layui-btn" lay-submit="" lay-filter="demo1">登录</button>
+                                <button class="layui-btn" lay-submit lay-filter="login">登录</button>
                             </div>
                         </form>
                     </div>
@@ -65,15 +67,15 @@
 
     </div>
 </body>
-<link rel="stylesheet" href="http://120.24.184.121/public/layui/css/layui.css" media="all">
-<script src="http://120.24.184.121/public/layui/layui.js" charset="utf-8"></script>
+{% include 'template/partial/js.html' %}
 <script>
-    layui.use(['form', 'layedit', 'laydate'], function () {
+    var $ = null;
+    layui.use(['form', 'layedit', 'laydate', 'jquery'], function () {
         var form = layui.form(),
             layer = layui.layer,
             layedit = layui.layedit,
             laydate = layui.laydate;
-
+        $ = layui.jquery;
         //创建一个编辑器
         var editIndex = layedit.build('LAY_demo_editor');
 
@@ -85,24 +87,18 @@
                 }
             },
             pass: [/(.+){6,12}$/, '密码必须6到12位'],
+            verify: [/(.+){4}$/, '验证码必须为4位']
         });
 
-        //监听指定开关
-        form.on('switch(switchTest)', function (data) {
-            layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
-                offset: '6px'
-            });
-            layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
-        });
+
 
         //监听提交
-        form.on('submit(demo1)', function (data) {
-            $.post('/admin/login',data.field,function(data,status){
-                console.log(data);
-            },'json').fail(function(){
-                layer.msg('错误信息');
+        form.on('submit(login)', function (data) {
+            $.post('/admin/login', data.field, function (data) {
+                window.location = '/admin';
+            }, 'json').fail(function (resp) {
+                layer.msg(resp.responseJSON.message);
             });
-            
             return false;
         });
 

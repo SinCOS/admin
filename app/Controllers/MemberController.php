@@ -35,16 +35,13 @@ class MemberController extends Controller
     }
     public function getUserInfo($rst, $resp, $args)
     {
-        $uid = intval($args['uid']);
+        $uid = (int)$args['uid'];
         if ($uid > 0) {
             $user_info = $this->db->get('users', '*', [
                 'id' => $uid
             ]);
-            if(!$user_info){
-                 $rst->redirect("/");
-            }
            return $this->view->render($resp,"template/user_info.html",[
-               user_info => $userinfo,
+               user_info => $userinfo ?? [],
            ]);
         }
     }

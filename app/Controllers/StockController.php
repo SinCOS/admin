@@ -17,6 +17,17 @@ class StockController extends Controller
             ]
         ]);
     }
+    public function putGroup($rst,$resp,$args){
+        $id = (int) args['group_id'];
+        $data = $resp->getParsedBody();
+        $message = array();
+        isset($data['name']) && v::notWhitespace()->notEmpty()->validate($data) || $message[] = '输入的数据无效';
+        return $resp->withJson([
+            'status' => empty($message) ? 200 :404,
+            'message' => empty($message) ? '' : $message[0],
+            'result' => ''
+        ],empty($message) ? 200 :404);
+    }
     private function get_GroupKey($group_info)
     {
         return ($group_info && $group_info['public'] == 1) ? "group:{$group_info['id']}" : "vipgroup:{$group_info['id']}";
