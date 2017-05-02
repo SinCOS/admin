@@ -8,9 +8,11 @@ class SystemController extends Controller {
     {
         $cache = $this->redis;
         $cache->select(2);
-        $config = $cache->get('');
+        return $this->view->render($resp,'template/system/config.html',[]);
     }
-    public function updateConfig(){
+    public function putConfig(){
+        $cache = $this->redis;
+        $cache->select(3);
         
     }
 }

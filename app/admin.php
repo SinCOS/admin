@@ -85,6 +85,11 @@
                 ]
             ));
         });
+
+        $app->group("/system",function()use($app){
+            $app->get('/config','\App\Controllers\SystemController:getConfig');
+        });
+
         $app->get('/verify_code','\App\Libs\VerifyCode');
         $app->get('/shutdown',function($rst,$resp,$args){
             session_destroy();
