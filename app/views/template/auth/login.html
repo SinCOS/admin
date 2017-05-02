@@ -85,9 +85,6 @@
                 }
             },
             pass: [/(.+){6,12}$/, '密码必须6到12位'],
-            content: function (value) {
-                layedit.sync(editIndex);
-            }
         });
 
         //监听指定开关
@@ -100,11 +97,13 @@
 
         //监听提交
         form.on('submit(demo1)', function (data) {
-            layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            })
+            $.post('/admin/login',data.field,function(data,status){
+                console.log(data);
+            },'json').fail(function(){
+                layer.msg('错误信息');
+            });
             
-            return true;
+            return false;
         });
 
 
