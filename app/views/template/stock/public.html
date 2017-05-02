@@ -62,17 +62,8 @@
 
 {% endblock %} {% block script %}
 <script>
-    var group_list = {
-        {
-            (group_list | json_encode | raw)
-        }
-    };
-    var public = {
-        {
-            public |
-                default ('1')
-        }
-    };
+    var group_list = {{(group_list | json_encode | raw)}};
+    var public = {{ public |default ('1')}};
 </script>
 
 <script>
