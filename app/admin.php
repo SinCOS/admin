@@ -88,12 +88,12 @@
 
         $app->group("/system",function()use($app){
             $app->get('/config','\App\Controllers\SystemController:getConfig');
+            $app->get('/reset-passwd','\App\Controllers\SystemController:getResetpasswd');
         });
 
         $app->get('/verify_code','\App\Libs\VerifyCode');
         $app->get('/shutdown',function($rst,$resp,$args){
             session_destroy();
-
             return $resp->withStatus(302)->withHeader('location','/admin');
         });
     })->add(function($request,$response,$next){
