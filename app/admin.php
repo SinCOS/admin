@@ -85,7 +85,7 @@
                 ]
             ));
         });
-
+        
         $app->group("/system",function()use($app){
             $app->get('/config','\App\Controllers\SystemController:getConfig');
             $app->get('/reset-passwd','\App\Controllers\SystemController:getResetpasswd');

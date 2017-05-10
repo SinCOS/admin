@@ -14,7 +14,7 @@
             'db' => [
                 'database_type' => 'mysql',
                 'database_name' => 'stock',
-                'server' => '127.0.0.1' ,
+                'server' => '10.28.185.254' ,
                 'port' => 3306,
                 'prefix' => 'cc_',
                 'username' => 'root',
