@@ -18,7 +18,7 @@
                 'port' => 3306,
                 'prefix' => 'cc_',
                 'username' => 'root',
-                'password' => '123456',
+                'password' => '5gSy4eHOEPCdDXOb',
                 'charset' => 'utf8'
             ]
         ],
