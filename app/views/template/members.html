@@ -25,7 +25,7 @@
         <td v-text="todo['username']"></td>
         <td v-text="todo['reg_time']"></td>
         <td v-text="todo['login_time']"></td>
-        <td v-text="new Date(todo['viptime']).toLocaleString()"></td>
+        <td v-text="new Date(todo['viptime']*1000).toLocaleString()"></td>
         <td v-text="todo['login_IP']"></td>
         <td v-text="todo['total_login']"></td>
       </tr>
