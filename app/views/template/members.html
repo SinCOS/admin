@@ -14,6 +14,7 @@
       <th>用户名</th>
       <th>注册时间</th>
       <th>登录时间</th>
+      <th>会员时间</th>
       <th>登录IP</th>
       <th>登录次数</th>
     </tr>
@@ -24,6 +25,7 @@
         <td v-text="todo['username']"></td>
         <td v-text="todo['reg_time']"></td>
         <td v-text="todo['login_time']"></td>
+        <td v-text="new Date(todo['viptime']).pattern('yyyy-MM-dd')"></td>
         <td v-text="todo['login_IP']"></td>
         <td v-text="todo['total_login']"></td>
       </tr>
